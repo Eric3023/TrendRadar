@@ -66,40 +66,41 @@ platforms:
   api_url: ""                            # 热榜数据 API 地址（留空使用默认地址）
                                         # 如果你自行部署了 newsnow，填入你的地址，如: https://your-domain.com/api/s
   sources:
-    - id: "toutiao"
-      name: "今日头条"
-      expected_domain: "toutiao.com"
-    - id: "baidu"
-      name: "百度热搜"
-      expected_domain: "baidu.com"
+    # ─── 保留的中立/专业源 ───
     - id: "wallstreetcn-hot"
       name: "华尔街见闻"
       expected_domain: "wallstreetcn.com"
-    - id: "thepaper"
-      name: "澎湃新闻"
-      expected_domain: "thepaper.cn"
-    - id: "bilibili-hot-search"
-      name: "bilibili 热搜"
-      expected_domain: "bilibili.com"
     - id: "cls-hot"
       name: "财联社热门"
       expected_domain: "cls.cn"
-    - id: "ifeng"
-      name: "凤凰网"
-      expected_domain: "ifeng.com"
-    - id: "tieba"
-      name: "贴吧"
-      expected_domain: "baidu.com"
-    - id: "weibo"
-      name: "微博"
-      expected_domain: "weibo.com"
-    - id: "douyin"
-      name: "抖音"
-      expected_domain: "douyin.com"
     - id: "zhihu"
       name: "知乎"
       expected_domain: "zhihu.com"
+    - id: "bilibili-hot-search"
+      name: "B站热搜"
+      expected_domain: "bilibili.com"
 
+    # ─── 替换源（替代原来情绪化的源）───
+    - id: "reuters"
+      name: "路透社"                     # ← 替换今日头条
+      expected_domain: "reuters.com"
+    - id: "github-trending"
+      name: "GitHub Trending"           # ← 替换百度热搜
+      expected_domain: "github.com"
+    - id: "reddit"
+      name: "Reddit 热门"                # ← 替换凤凰网
+      expected_domain: "reddit.com"
+    - id: "bbc-chinese"
+      name: "BBC中文"                    # ← 替换微博
+      expected_domain: "bbc.com"
+
+    # ─── 已删除的情绪化源 ───
+    # 贴吧  → 已删除（信息质量低、极端言论多）
+    # 抖音  → 已删除（碎片化、缺乏深度）
+    # 今日头条 → 已替换为路透社
+    # 百度热搜 → 已替换为GitHub Trending
+    # 凤凰网   → 已替换为Reddit
+    # 微博     → 已替换为BBC中文
 
 
 # ===============================================================
@@ -131,15 +132,32 @@ rss:
       name: "Hacker News"
       url: "https://hnrss.org/frontpage"
 
-    - id: "ruanyifeng"
-      name: "阮一峰的网络日志"
-      url: "http://www.ruanyifeng.com/blog/atom.xml"
-      enabled: false                  # 禁用
-      # max_age_days: 3               # 示例：推送 3 天内的文章（更新较慢的博客）
-     
     - id: "yahoo-finance"
       name: "雅虎财经"
       url: "https://finance.yahoo.com/news/rssindex"
+
+    # ─── 新增的国际/中立媒体 RSS ───
+    - id: "ft-chinese"
+      name: "FT中文网"
+      url: "https://www.ftchinese.com/rss/feed"
+
+    - id: "bbc-chinese-rss"
+      name: "BBC中文"
+      url: "https://feeds.bbci.co.uk/zhongwen/simp/rss.xml"
+
+    - id: "nyt-chinese"
+      name: "纽约时报中文"
+      url: "https://cn.nytimes.com/rss/"
+
+    - id: "reuters-world"
+      name: "Reuters World"
+      url: "https://www.reutersagency.com/feed/"
+
+    # ─── 原配置中的阮一峰博客（已禁用，保留注释）───
+    # - id: "ruanyifeng"
+    #   name: "阮一峰的网络日志"
+    #   url: "http://www.ruanyifeng.com/blog/atom.xml"
+    #   enabled: false
 
     # 自定义源示例
     # - id: "custom-feed"
@@ -243,10 +261,10 @@ display:
     ai_analysis: true                 # AI 分析区域（true=显示, false=隐藏）
 
   # 独立展示区：将指定平台/RSS 完整展示，不受关键词过滤
-  # 推送展示由 regions.standalone 控制，AI 分析由 ai_analysis.include_standalone 控制
+  # 知乎和B站放在这里，作为娱乐/社区参考但不影响主筛选结果
   standalone:
-    platforms: ["zhihu", "wallstreetcn-hot"]     # 热榜平台 ID 列表（如 ["zhihu", "weibo"]）
-    rss_feeds: []                                # RSS 源 ID 列表（如 ["hacker-news"]）
+    platforms: ["zhihu", "bilibili-hot-search"]
+    rss_feeds: []
     max_items: 20                                # 每个源最多展示条数（0=不限制）
 
 
